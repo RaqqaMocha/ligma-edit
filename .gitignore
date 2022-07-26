@@ -1,0 +1,3 @@
+*.miz
+*.pyc
+/venv/
