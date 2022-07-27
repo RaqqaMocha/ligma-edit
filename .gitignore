@@ -1,3 +1,4 @@
 *.miz
 *.pyc
 /venv/
+/miz_data/
