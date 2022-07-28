@@ -29,7 +29,7 @@ def zip_miz(path, loadout_id):
 
 
 def main(miz_path, loadout_path):
-    loadout_id = os.path.basename(loadout_path)
+    loadout_id = os.path.basename(loadout_path).split(".")[0]
     if os.path.exists(EXTRACT_PATH):
         shutil.rmtree(EXTRACT_PATH)
 
