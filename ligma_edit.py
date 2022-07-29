@@ -42,7 +42,7 @@ def main(miz_path, loadout_path):
     print("Done")
 
     print(f"Reading {loadout_id} loadout lua data... ", end="")
-    restrictions = ld.read(loadout_path, encoding="utf-8")
+    loadout = ld.read(loadout_path, encoding="utf-8")
     print("Done")
 
     for coalition in mission["coalition"]:
@@ -51,9 +51,13 @@ def main(miz_path, loadout_path):
                 if player_unit in country:
                     for group_idx, group in enumerate(country[player_unit]["group"]):
                         for unit_idx, unit in enumerate(group["units"]):
-                            if unit["type"] in restrictions:
-                                mission["coalition"][coalition]["country"][country_idx][player_unit]["group"][group_idx]["units"][unit_idx]["payload"]["restricted"] = restrictions[unit["type"]]
-                                print(f"Restrictions applied to {unit['type']}")
+                            if unit["type"] in loadout:
+                                if "restricted" in loadout[unit["type"]]:
+                                    mission["coalition"][coalition]["country"][country_idx][player_unit]["group"][group_idx]["units"][unit_idx]["payload"]["restricted"] = loadout[unit["type"]]["restricted"]
+                                    print(f"Restrictions applied to {unit['type']}")
+                                if "Radio" in loadout[unit["type"]]:
+                                    mission["coalition"][coalition]["country"][country_idx][player_unit]["group"][group_idx]["units"][unit_idx]["Radio"]= loadout[unit["type"]]["Radio"]
+                                    print(f"Radio preset applied to {unit['type']}")
 
     print("Writing modified mission lua data... ", end="")
     ld.write("miz_data/mission", mission, indent="\t", prefix="mission= ")
