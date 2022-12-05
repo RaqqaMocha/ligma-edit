@@ -9,7 +9,38 @@ import luadata as ld
 EXTRACT_PATH = "miz_data"
 PLAYER_UNITS = ["plane", "helicopter"]
 
+def is_selected(selector, unit):
+    selectors = selector.split(" ")
+    
+    unit_type = None
+    unit_names = []
+    
+    # parse selector statements
+    for sel in selectors: 
+        # unit type selector
+        if sel.startswith("."):
+            unit_type = sel[1:] # only allow one unit type (for now)
+            continue
+        
+        # unit name selector
+        if sel.startswith("#"):
+            unit_names.append(sel[1:])
+            continue
+    
+    # check unit type
+    if unit["type"] != unit_type:
+        print("Wrong unit type")
+        return False
 
+    # check unit name
+    if not all([s in unit["name"] for s in unit_names]):
+        print("Wrong unit name")
+        return False
+
+    # unit passes all checks and is selected
+    return True
+            
+            
 def unzip_miz(path):
     print(f"Opening miz file {path}... ", end="")
     with ZipFile(path, "r") as zip_f:
